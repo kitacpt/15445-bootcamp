@@ -177,3 +177,8 @@ int main() {
 
   return 0;
 }
+
+// so，为一个container实现iterator，被认为是“有用的”。
+// iterator内部，实现++、==、!=等运算符
+// 目标类中，定义begin、end.
+// 调用时，begin->end,一直++

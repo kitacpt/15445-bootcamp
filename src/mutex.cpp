@@ -44,3 +44,4 @@ int main() {
   std::cout << "Printing count: " << count << std::endl;
   return 0;
 }
+//lock和unlock就行了

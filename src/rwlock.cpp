@@ -28,9 +28,9 @@
 // Includes the thread library header.
 #include <thread>
 
-// Defining a global count variable and a shared mutex to be used by all threads.
-// The std::shared_mutex is a mutex that allows for shared locking, as well as
-// exclusive locking.
+// Defining a global count variable and a shared mutex to be used by all
+// threads. The std::shared_mutex is a mutex that allows for shared locking, as
+// well as exclusive locking.
 int count = 0;
 std::shared_mutex m;
 
@@ -71,3 +71,10 @@ int main() {
 
   return 0;
 }
+
+// 不同于mutex只支持一个锁持有，shared_mutex可以多个锁同时持有？
+// shared_mutex 支持两种加锁方式:
+// 1. std::shared_lock lk(m)	读锁(共享)	多个线程可同时持有,只读
+// 2. std::unique_lock lk(m)	写锁(独占)
+// 只能一个线程持有,排他，这个锁是movable的（如果需要将锁的有效期延伸到调用者）
+// 3. shared_lock 和 unique_lock 都是 RAII-style的，不需要释放锁

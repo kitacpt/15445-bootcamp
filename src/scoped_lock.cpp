@@ -45,3 +45,5 @@ int main() {
   std::cout << "Printing count: " << count << std::endl;
   return 0;
 }
+
+//不想unlock？使用scoped_lock，在这个域内都加锁

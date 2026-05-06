@@ -69,12 +69,12 @@ int main() {
   std::vector<int> int_array = {1, 2, 3, 4};
 
   // Now, we move the values of this array to another lvalue.
-  std::vector<int> stealing_ints = std::move(int_array);
+  std::vector<int> stealing_ints = std::move(int_array); // int_array 被 move 了，此时int_array 是空值。
 
   // Rvalue references are references that refer to the data itself, as opposed
   // to a lvalue. Calling std::move on a lvalue (such as stealing_ints) will
   // result in the expression being cast to a rvalue reference.
-  std::vector<int> &&rvalue_stealing_ints = std::move(stealing_ints);
+  std::vector<int> &&rvalue_stealing_ints = std::move(stealing_ints); //看起来stealing_ints 被 move 了，但std::move只起到了转换的作用，没有真正move数据，因此stealing_ints 仍然拥有数据的所有权，rvalue_stealing_ints 是 stealing_ints 的一个别名，指向同一块内存。
 
   // However, note that after this, it is still possible to access the data in
   // stealing_ints, since that is the lvalue that owns the data, not
@@ -92,8 +92,9 @@ int main() {
 
   // It would be unwise to try to do anything with int_array2 here. Uncomment
   // the code to try it out! (On my machine, this segfaults...) NOTE: THIS MIGHT
-  // WORK FOR YOU. THIS DOES NOT MEAN THAT THIS IS WISE TO DO! 
+  // WORK FOR YOU. THIS DOES NOT MEAN THAT THIS IS WISE TO DO!
   // std::cout << int_array2[1] << std::endl;
+  // 这是因为 int_array2 的数据被 move 到了 move_add_three_and_print 函数的 vec 变量中，int_array2 不再拥有数据的所有权，因此访问 int_array2[1] 是未定义行为，可能会导致程序崩溃。
 
   // If we don't move the lvalue in the caller context to any lvalue in the
   // callee context, then effectively the function treats the rvalue reference
@@ -108,3 +109,19 @@ int main() {
 
   return 0;
 }
+
+// 左值：有实际内存地址的对象，可以出现在赋值语句的左边（如变量）。右值：没有内存地址的临时对象，通常是字面量或表达式结果。
+// int& 是左值引用，只能绑定到左值 int&a = b;
+// int&& 是右值引用，可以绑定到右值 int&&a = 10; C++11 特性
+// std::move 是"许可证"，告诉编译器"这个对象我不要了，你可以掏空它"；但是否真去掏，取决于接下来谁来接手。
+// 被引用接手 → 啥也不发生；被新对象/移动构造函数接手 → 才真正发生数据转移。
+
+// 移动语义使用场景：
+// 1. 大对象的转移：当一个对象占用大量资源（如内存）时，移动语义可以避免昂贵的复制操作，直接转移资源所有权，提高性能。
+// 2. 独占所有权类型：如 std::unique_ptr，设计为独占资源所有权，移动语义是其核心机制，允许资源安全转移而非复制。
+// 3. 容器扩容/重排：如 std::vector 在扩容时会移动元素而非复制，利用移动语义提升效率。
+// 4. 完美转发？
+
+//移动语义本质上是 RAII 的延伸：RAII
+//让"获取资源即初始化、析构即释放"，而移动让"资源所有权可以在对象之间零成本转移"。两者结合，C++
+//才能既零开销又安全地管理裸资源（堆、文件、锁、线程……）。

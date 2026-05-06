@@ -103,6 +103,33 @@ private:
   bool valid_;
 };
 
+//just try try
+class Person2{
+public:
+  Person2() : age_(0), nicknames_({}), valid_(true) {}
+  Person2(uint32_t age, std::vector<std::string> &&nicknames)
+      : age_(age), nicknames_(std::move(nicknames)), valid_(true) {}
+  Person2(Person2 &&person)
+      : age_(person.age_), nicknames_(std::move(person.nicknames_)), valid_(true) {
+    person.valid_ = false;
+  }
+  Person2 &operator=(Person2 &&other)
+  {
+    age_ = other.age_;
+    nicknames_ = std::move(other.nicknames_);
+    valid_ = true;
+    other.valid_ = false;
+    return *this;
+  }
+  Person2(const Person2 &) = delete;
+  Person2 &operator=(const Person2 &) = delete;
+private:
+  uint32_t age_;
+  std::vector<std::string> nicknames_;
+  bool valid_;
+  // Move constructor for class Person2. It
+};
+
 int main() {
   // Let's see how move constructors and move assignment operators can be
   // implemented and used in a class. First, we create an instance of the class
@@ -139,8 +166,9 @@ int main() {
   // default constructor, and the second line invokes the copy assignment operator
   // to re-initialize andy3 with the deep-copied contents of andy2. Try uncommenting
   // these lines of code to see the resulting compiler errors.
-  // Person andy3;
-  // andy3 = andy2;
+  //Person andy3;
+  //andy3 = andy2;
+  //编译无法通过直接报错：将一个左值赋值给了只接受右值的赋值运算符。
 
   // Because the copy constructor is deleted, this code will not compile. Try
   // uncommenting this code to see the resulting compiler errors.
@@ -148,3 +176,5 @@ int main() {
 
   return 0;
 }
+
+//移动语义可用于移动构造函数和移动赋值运算符。移动构造函数的形式为 ClassName(ClassName&&)，移动赋值运算符的形式为 ClassName& operator=(ClassName&&)。在这两种函数中，参数都是一个右值引用，表示这个参数是一个即将被销毁的对象，可以安全地"窃取"它的资源而不需要担心后续使用该对象会导致问题。通过实现这些函数，我们可以让我们的类支持高效的资源转移，而不是昂贵的资源复制，从而提升性能。

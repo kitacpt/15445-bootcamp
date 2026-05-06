@@ -102,3 +102,6 @@ int main() {
 
   return 0;
 }
+// make_unique
+// unique_ptr是可以通过move转移所有权的
+// 传参时，需要使用引用来避免所有权发生改变，如果是左值实参，会编译报错

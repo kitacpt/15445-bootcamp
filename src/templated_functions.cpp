@@ -88,3 +88,14 @@ int main() {
 
   return 0;
 }
+
+// 一个模板，服务于多种数据类型（just抽象）
+// template <typename A,typename B> 声明有几种类型...
+// templayte <> void func(float a) { ... }
+// 这个函数专门为float类型服务，其他类型调用这个函数会调用下面的模板函数
+
+//非类型模板参数（non-type template parameter, NTTP）：
+// template <bool T> int add3(int a) { ... }
+// 这个函数根据布尔值T的不同，执行不同的逻辑。调用时需要指定T的值，如add3<true>(3)或add3<false>(3)。适合用于做分支选择：运行时分支，调用时判断，而变异器分支，在编译时决定好走哪条路。
+// 如数组大小 std::array<int, 5> arr; 这里的5就是一个非类型模板参数，编译时就确定了数组的大小。
+// C++17: 使用constexpr if语句保证编译期分支。

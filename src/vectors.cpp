@@ -172,3 +172,7 @@ int main() {
 
   return 0;
 }
+//1. push_back & emplace back
+//2. erase
+//3. std:remove_if + earse（remove_if将需要删除的元素重排到vector尾部，通过it将这个尾部删除掉）
+//4. 完美转发：如何完美地将args传进wrapper的内部

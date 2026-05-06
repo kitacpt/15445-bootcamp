@@ -137,3 +137,7 @@ int main() {
 
   return 0;
 }
+
+//1. warpper class的概念
+//2. RAII
+//3. should not be copyable, but should be moveable

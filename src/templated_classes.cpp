@@ -95,6 +95,10 @@ int main() {
   std::cout << "Calling print on Foo b(3.4f): ";
   b.print();
 
+  Foo g("hello");
+  std::cout << "Calling print on Foo c(\"hello\"): ";
+  g.print();
+
   // Second, we construct an object from a templated class with multiple
   // type arguments.
   Foo2<int, float> c(3, 3.2f);
@@ -126,3 +130,6 @@ int main() {
 
   return 0;
 }
+
+// 和模板函数用法差不多：template定义有几种类型在模板内，可为特定类型指定实现，模板可以是type也可以是value。
+// 实例化过程中，可由编译器自行判断类型

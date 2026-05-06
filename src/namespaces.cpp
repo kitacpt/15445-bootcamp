@@ -159,3 +159,7 @@ int main() {
 
   return 0;
 }
+
+//1. namespace可嵌套
+//2. using namespace X，可将当前namespace切换到指定的namespace
+//3. using X::xxx，指定xxx函数选择到namespace X里的版本

@@ -124,3 +124,7 @@ int main() {
 
   return 0;
 }
+//insert、find、erase、count
+//map-> ordered, use red&black tree
+//unordered_map -> unordered, hash table.fastttttttttttttttttt (only in big data)
+//unordered_map在insert时，会进行rehash，所有迭代器都会失效。

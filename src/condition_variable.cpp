@@ -9,7 +9,7 @@
 // synchronization primitive. The condition variable primitive allows threads
 // to wait until a particular condition before they grab a mutex. It also
 // allows other threads to signal waiting threads to alert them that
-// the condition may be true. 
+// the condition may be true.
 
 // For a more detailed introduction of C style condition variables, see
 // https://pages.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf.
@@ -34,13 +34,13 @@
 int count = 0;
 std::mutex m;
 
-// This is the syntax for declaring and default initializing a condition 
+// This is the syntax for declaring and default initializing a condition
 // variable.
 std::condition_variable cv;
 
 // In this function, a thread increments the count variable by
 // 1. It also will notify one waiting thread if the count value is 2.
-// It is ran by two of the threads in the main function. 
+// It is ran by two of the threads in the main function.
 void add_count_and_notify() {
   std::scoped_lock slk(m);
   count += 1;
@@ -49,7 +49,7 @@ void add_count_and_notify() {
   }
 }
 
-// This function, ran by the waiting thread, waits on the condition 
+// This function, ran by the waiting thread, waits on the condition
 // count == 2. After that, it grabs the mutex m and executes code in
 // the critical section.
 // Condition variables need an std::unique_lock object to be constructed.
@@ -59,7 +59,7 @@ void add_count_and_notify() {
 // or copy-assignable.
 void waiter_thread() {
   std::unique_lock lk(m);
-  cv.wait(lk, []{return count == 2;});
+  cv.wait(lk, [] { return count == 2; });
 
   std::cout << "Printing count: " << count << std::endl;
 }
@@ -78,3 +78,9 @@ int main() {
   t3.join();
   return 0;
 }
+
+// condition_variable, 等待一个条件，条件到达时，持有锁并处理
+// notify_one, 通知所有wait的thread
+// wait，需要传入锁、以及处理条件。
+// 1. 若条件不满足，释放锁并继续等待（不往下执行）
+// 2. 若条件满足，持有锁并向下执行

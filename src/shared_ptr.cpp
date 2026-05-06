@@ -147,3 +147,7 @@ int main() {
 
   return 0;
 }
+
+// make_shared
+// use_count用于引用计数
+// 可以copy（包括传参的时候），当然也可以只传引用
